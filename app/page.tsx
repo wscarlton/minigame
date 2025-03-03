@@ -3,13 +3,13 @@
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import Blackjacksurvival from '@/components/games/Blackjacksurvival'
+import BlackjackEndlessEnhanced from '@/components/games/BlackjackEndlessEnhanced'
 
 export default function Home() {
   const [currentGame, setCurrentGame] = useState(null)
   
   const games = [
-    { name: 'Blackjack Survival', component: Blackjacksurvival }
+    { name: 'Blackjack Survival', component: BlackjackEndlessEnhanced }
   ]
   
   const GameComponent = currentGame ? games.find(g => g.name === currentGame)?.component : null
