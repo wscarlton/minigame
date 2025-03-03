@@ -1,39 +1,59 @@
-import Link from "next/link"
+'use client'
 
-import { siteConfig } from "@/config/site"
-import { buttonVariants } from "@/components/ui/button"
+import { useState } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import Blackjacksurvival from '@/components/games/Blackjacksurvival'
 
-export default function IndexPage() {
+export default function Home() {
+  const [currentGame, setCurrentGame] = useState(null)
+  
+  const games = [
+    { name: 'Blackjack Survival', component: Blackjacksurvival }
+  ]
+  
+  const GameComponent = currentGame ? games.find(g => g.name === currentGame)?.component : null
+
   return (
-    <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
-      <div className="flex max-w-[980px] flex-col items-start gap-2">
-        <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
-          Beautifully designed components <br className="hidden sm:inline" />
-          built with Radix UI and Tailwind CSS.
-        </h1>
-        <p className="max-w-[700px] text-lg text-muted-foreground">
-          Accessible and customizable components that you can copy and paste
-          into your apps. Free. Open Source. And Next.js 13 Ready.
-        </p>
-      </div>
-      <div className="flex gap-4">
-        <Link
-          href={siteConfig.links.docs}
-          target="_blank"
-          rel="noreferrer"
-          className={buttonVariants()}
-        >
-          Documentation
-        </Link>
-        <Link
-          target="_blank"
-          rel="noreferrer"
-          href={siteConfig.links.github}
-          className={buttonVariants({ variant: "outline" })}
-        >
-          GitHub
-        </Link>
-      </div>
-    </section>
+    <main className="min-h-screen p-4 md:p-8">
+      {!currentGame ? (
+        <div className="max-w-4xl mx-auto">
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="text-2xl">Project 63 Casino Games</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>Select a game to play from the collection below.</p>
+            </CardContent>
+          </Card>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {games.map((game) => (
+              <Card key={game.name} className="hover:shadow-lg transition-shadow cursor-pointer" 
+                    onClick={() => setCurrentGame(game.name)}>
+                <CardHeader>
+                  <CardTitle>{game.name}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Button className="w-full">Play</Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="max-w-4xl mx-auto">
+          <Button 
+            variant="outline" 
+            className="mb-4"
+            onClick={() => setCurrentGame(null)}
+          >
+            ← Back to Games
+          </Button>
+          
+          {GameComponent && <GameComponent />}
+        </div>
+      )}
+    </main>
   )
 }
